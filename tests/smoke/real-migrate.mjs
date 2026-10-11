@@ -71,6 +71,8 @@ async function waitForLogin(call) {
 
 console.log(`• Installing create-talorys@${LEGACY_VERSION} (two-resource layout) into ${dir}`);
 const legacy = spawnSync("npx", ["-y", `create-talorys@${LEGACY_VERSION}`, "--yes", "--dir", dir, "--account-id", CLOUDFLARE_ACCOUNT_ID, "--name", "Migrate"], {
+  // Outside the monorepo, so npx fetches the published package instead of the local workspace of the same name.
+  cwd: work,
   env,
   stdio: "inherit",
   shell: process.platform === "win32",
