@@ -9,8 +9,10 @@
 //   3. `update` with packages/create-talorys/dist/cli.js
 //   4. sign in at the new workers.dev URL with the same password and read them back
 //
-// Required: CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID
-// The token needs Workers Scripts:Edit, Cloudflare Pages:Edit (for step 1 only),
+// Required: CLOUDFLARE_ACCOUNT_ID, plus credentials: CLOUDFLARE_API_TOKEN (CI), or
+// existing logins on this machine for both CLIs involved: `npx wrangler login`
+// (step 1 uses the old Wrangler-based installer) and `npx cf auth login` (step 3).
+// A token needs Workers Scripts:Edit, Cloudflare Pages:Edit (for step 1 only),
 // Workers AI:Read and Account Settings:Read.
 //
 // Resources are left in place for inspection; the script prints how to remove them.
@@ -22,9 +24,9 @@ import { fileURLToPath } from "node:url";
 import { randomBytes } from "node:crypto";
 import assert from "node:assert/strict";
 
-const { CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID } = process.env;
-if (!CLOUDFLARE_API_TOKEN || !CLOUDFLARE_ACCOUNT_ID) {
-  console.log("Skipping real-account migration test: set CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID to run it.");
+const { CLOUDFLARE_ACCOUNT_ID } = process.env;
+if (!CLOUDFLARE_ACCOUNT_ID) {
+  console.log("Skipping real-account migration test: set CLOUDFLARE_ACCOUNT_ID (and CLOUDFLARE_API_TOKEN, or sign in with wrangler and cf) to run it.");
   process.exit(0);
 }
 

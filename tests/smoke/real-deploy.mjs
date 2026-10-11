@@ -5,7 +5,8 @@
 // one streamed chat turn through the Worker to the agent Durable Object. It also runs
 // two further updates, so consecutive cf deploys are covered.
 //
-// Required: CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID
+// Required: CLOUDFLARE_ACCOUNT_ID, plus credentials: CLOUDFLARE_API_TOKEN (CI), or an
+// existing `npx cf auth login` on this machine.
 // Optional: TALORYS_SMOKE_AI=1 to also run one Workers AI chat turn (uses Neurons)
 //
 // Resources are left in place for inspection; the script prints how to remove them.
@@ -17,9 +18,9 @@ import { fileURLToPath } from "node:url";
 import { randomBytes } from "node:crypto";
 import assert from "node:assert/strict";
 
-const { CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID } = process.env;
-if (!CLOUDFLARE_API_TOKEN || !CLOUDFLARE_ACCOUNT_ID) {
-  console.log("Skipping real-account smoke test: set CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID to run it.");
+const { CLOUDFLARE_ACCOUNT_ID } = process.env;
+if (!CLOUDFLARE_ACCOUNT_ID) {
+  console.log("Skipping real-account smoke test: set CLOUDFLARE_ACCOUNT_ID (and CLOUDFLARE_API_TOKEN, or sign in with `npx cf auth login`) to run it.");
   process.exit(0);
 }
 
